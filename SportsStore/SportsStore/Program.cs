@@ -1,9 +1,18 @@
+using SportsStore.Models;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+ConfigurationManager configuration = builder.Configuration;
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<StoreDbContext>(opts
+    => opts.UseSqlServer(configuration["ConnectionStrings:SportsStoreConnection"]));
+builder.Services.AddScoped<IStoreRepository, EFStoreRepository>();
 
-var ap00p = builder.Build();
+
+var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -26,5 +35,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+SeedData.EnsurePopulated(app);
 
 app.Run();
