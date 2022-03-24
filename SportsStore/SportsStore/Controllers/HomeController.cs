@@ -17,7 +17,7 @@ namespace SportsStore.Controllers
         }
 
         //adding pagination
-        public IActionResult Index(int productPage = 1) =>
+        public ViewResult Index(int productPage = 1) =>
             View(new ProductListViewModel
             {
                 Products = repository.Products
