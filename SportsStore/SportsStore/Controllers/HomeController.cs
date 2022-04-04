@@ -17,10 +17,11 @@ namespace SportsStore.Controllers
         }
 
         //adding pagination
-        public ViewResult Index(int productPage = 1) =>
+        public ViewResult Index(string category, int productPage = 1) =>
             View(new ProductListViewModel
             {
                 Products = repository.Products
+                .Where(p => p.Category == null || p.Category == category)
                 .OrderBy(p => p.ProductID)
                 .Skip((productPage - 1) * PageSize)
                 .Take(PageSize),
@@ -29,7 +30,8 @@ namespace SportsStore.Controllers
                     CurrentPage = productPage,
                     ItemsPerPage = PageSize,
                     TotalItems = repository.Products.Count()
-                }
+                },
+                CurrentCategory = category
             });
     }
 }
