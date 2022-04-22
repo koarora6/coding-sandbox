@@ -10,6 +10,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<StoreDbContext>(opts
     => opts.UseSqlServer(configuration["ConnectionStrings:SportsStoreConnection"]));
 builder.Services.AddScoped<IStoreRepository, EFStoreRepository>();
+builder.Services.AddRazorPages();
 
 
 var app = builder.Build();
@@ -32,13 +33,13 @@ app.UseRouting();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute("catpage",
-        "{category}/Page{productPage:int",
+        "{category}/Page{productPage:int}",
         new { Controller = "Home", action = "Index" });
 
     endpoints.MapControllerRoute("page", "Page{productPage:int}",
         new { Controller = "Home", action = "Index", productPage = 1 });
 
-    endpoints.MapControllerRoute("category", "{category",
+    endpoints.MapControllerRoute("category", "{category}",
         new { Controller = "Home", action = "Index", productPage = 1 });
 
     endpoints.MapControllerRoute("pagination",
@@ -46,6 +47,7 @@ app.UseEndpoints(endpoints =>
         new { Controller = "Home", action = "Index", productPage = 1 });
 
     endpoints.MapDefaultControllerRoute();
+    endpoints.MapRazorPages();
 });
 
 app.UseAuthorization();
