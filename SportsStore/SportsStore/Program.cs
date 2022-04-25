@@ -11,6 +11,8 @@ builder.Services.AddDbContext<StoreDbContext>(opts
     => opts.UseSqlServer(configuration["ConnectionStrings:SportsStoreConnection"]));
 builder.Services.AddScoped<IStoreRepository, EFStoreRepository>();
 builder.Services.AddRazorPages();
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession();
 
 
 var app = builder.Build();
@@ -29,6 +31,7 @@ app.UseStatusCodePages();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseSession();
 app.UseRouting();
 app.UseEndpoints(endpoints =>
 {
